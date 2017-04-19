@@ -1,4 +1,5 @@
 ## Terry
+
 Repository contain the code about Terry the psychologist.
 
 Terry is a Bot build to determine the psychological state of the user through a simple chat. Once a positive diagnosis is made, the bot connects the respective user that requires medical attention to a professional for further Help.

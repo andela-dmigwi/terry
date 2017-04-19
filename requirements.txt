@@ -1,0 +1,6 @@
+flask==0.12.1
+chatterbot==0.6.0
+flask-migrate==2.0.3
+uuid==1.30
+python-dotenv==0.6.3
+gunicorn==19.6.0

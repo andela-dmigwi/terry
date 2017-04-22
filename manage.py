@@ -1,9 +1,7 @@
 """ Created by Migwi Ndung'u  @April 2017"""
-from app import create_app
+from terry_bot import app
 # from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-
-app = create_app()
 
 # migrate = Migrate(app, db)
 manager = Manager(app)

@@ -1,16 +1,17 @@
 from chatterbot import ChatBot
-from chatterbot import storage
 from config import DATABASE_URL
 
 
 class utils():
 
     def __init__(self):
-        storage.MongoDatabaseAdapter(database='terry-database',
-                                     database_uri=DATABASE_URL)
+
         self.chatbot = ChatBot(
             "Terry Wanjiku",
-            trainer='chatterbot.trainers.ChatterBotCorpusTrainer'
+            trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
+            storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
+            database_uri=DATABASE_URL,
+            database='heroku_dgskmqsp'
         )
         # chatbot.set_trainer(ListTrainer)
         self.chatbot.train("chatterbot.corpus.english")

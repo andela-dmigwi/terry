@@ -27,7 +27,7 @@ def webhook():
     return "ok"
 
 
-# @page.handle_message
+@page.handle_message
 def message_handler(event):
     """:type event: fbmq.Event"""
     sender_id = event.sender_id
@@ -36,7 +36,7 @@ def message_handler(event):
     page.send(sender_id, util.get_response(message))
 
 
-# @page.after_send
+@page.after_send
 def after_send(payload, response):
     """:type payload: fbmq.Payload"""
     print("complete")

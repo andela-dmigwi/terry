@@ -5,7 +5,6 @@ from config import DATABASE_URL
 class utils():
 
     def __init__(self):
-
         self.chatbot = ChatBot(
             "Terry Wanjiku",
             trainer='chatterbot.trainers.ChatterBotCorpusTrainer',

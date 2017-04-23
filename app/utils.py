@@ -16,15 +16,23 @@ class utils():
             "Terry Wanjiku",
             storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
             database_uri=DATABASE_URL,
-            database='heroku_dgskmqsp'
+            database='heroku_dgskmqsp',
+            logic_adapters=[
+                {
+                    'import_path': 'chatterbot.logic.BestMatch'
+                },
+                {
+                    'import_path': 'chatterbot.logic.LowConfidenceAdapter',
+                    'threshold': 0.65,
+                    'default_response': 'I am sorry, but I do not understand.'
+                }
+            ],
         )
         self.chatbot.set_trainer(ListTrainer)
         self.chatbot.train(conversation)
 
     def get_response(self, statement):
-        response = self.chatbot.get_response(statement)
-        print('You want some>>>>>', response)
-        return str(response).lstrip('<Statement text:').rstrip('>')
+        return self.chatbot.get_response(statement)
 
     def send_message(self, recipient_id, message_text=None, template=None):
         data = {

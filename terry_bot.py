@@ -2,12 +2,8 @@
 from app import create_app
 from flask import request, make_response
 from app.utils import utils
-from config import page_access_token
-from fbmq import Page
-
 
 app = create_app()
-page = Page(page_access_token)
 util = utils()
 
 
@@ -17,26 +13,52 @@ def verify():
     if (hub_challenge):
         return make_response(hub_challenge, 200)
     # Response tests successful deployment of the bot..
-    return make_response("Hello world, this is a Facebook"
-                         " Video and Chat Bot. Enjoy!!", 200)
+    return make_response("Hello world, I am Terry Wanjikoh your"
+                         ", personal medical expert!!", 200)
 
 
 @app.route('/', methods=['POST'])
 def webhook():
-    page.handle_webhook(request.get_data(as_text=True))
-    return "ok"
+    data = request.get_json()
+    print('*******\n', data, '\n#######')
+    if not data:
+        return make_response("ok", 200)
 
+    if data["object"] == "page":
 
-@page.handle_message
-def message_handler(event):
-    """:type event: fbmq.Event"""
-    sender_id = event.sender_id
-    message = event.message_text
+        for entry in data["entry"]:
+            if 'messaging' in entry:
+                for messaging_event in entry["messaging"]:
+                    sender_id = messaging_event["sender"]["id"]
+                    # recipient_id = messaging_event["recipient"]["id"]
 
-    page.send(sender_id, util.get_response(message))
+                    if messaging_event.get("message"):
+                        event = messaging_event["message"]
 
+                        if "text" in event:
+                            message_text = event["text"]
+                            util.match_response(sender_id, message_text)
+                        else:
+                            print('No Text Message sent')
 
-@page.after_send
-def after_send(payload, response):
-    """:type payload: fbmq.Payload"""
-    print("complete")
+                    # delivery confirmation
+                    if messaging_event.get("delivery"):
+                        pass
+
+                    # optin confirmation
+                    if messaging_event.get("optin"):
+                        pass
+
+                    # user clicked/tapped "postback" button in earlier message
+                    if messaging_event.get("postback"):
+                        pass
+                        # postback = messaging_event["postback"]["payload"]
+                        # util.postback(user_id=sender_id,
+                        #                message_text=postback)
+            else:
+                print('Metadata file was sent')
+                print('>>>>>>>::\n', entry, '::<<<<<<')
+                # sender_id = messaging_event["sender"]["id"]
+                # util.eliza_response(sender_id, 'computers')
+
+    return make_response("ok", 200)

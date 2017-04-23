@@ -2,10 +2,9 @@
 import json
 import requests
 from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
+from chatterbot.trainers import ChatterBotCorpusTrainer
 # from app.templates import user_not_found  # , welcome_text, something_wrong
 from config import fb_url, params, json_headers
-from app.kb import conversation
 from config import DATABASE_URL
 
 
@@ -28,8 +27,8 @@ class utils():
                 }
             ],
         )
-        self.chatbot.set_trainer(ListTrainer)
-        self.chatbot.train(conversation)
+        self.chatbot.set_trainer(ChatterBotCorpusTrainer)
+        self.chatbot.train('./data')
 
     def get_response(self, statement):
         return self.chatbot.get_response(statement)
@@ -42,7 +41,6 @@ class utils():
 
         if template:
             data['message'] = template
-        print('Data >>>>', data)
         data = json.dumps(data)
         url = "{}/me/messages".format(fb_url)
         response = requests.post(url, params=params,

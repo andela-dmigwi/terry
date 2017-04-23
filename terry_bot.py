@@ -1,13 +1,14 @@
 """ Created by Migwi Ndung'u  @April 2017"""
 from app import create_app
 from flask import request, make_response
-from app.utils import get_response
+from app.utils import utils
 from config import page_access_token
 from fbmq import Page
 
 
 app = create_app()
 page = Page(page_access_token)
+util = utils()
 
 
 @app.route('/', methods=['GET'])
@@ -32,7 +33,7 @@ def message_handler(event):
     sender_id = event.sender_id
     message = event.message_text
 
-    page.send(sender_id, get_response(message))
+    page.send(sender_id, util.get_response(message))
 
 
 @page.after_send
